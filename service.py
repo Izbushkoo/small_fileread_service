@@ -44,7 +44,7 @@ async def create_single_draft_test():
 
 def parse_content(input_text):
     sections = []
-    regex = re.compile(r'\*(HHH|PPP|TTT)\*(.*?)\*/\1\*', re.DOTALL)
+    regex = re.compile(r'(HHH | PPP | TTT)(. *?)\1', re.DOTALL)
 
     for match in regex.finditer(input_text):
         type_tag = match.group(1)
