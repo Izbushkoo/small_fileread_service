@@ -30,7 +30,7 @@ app.add_middleware(
 
 router = APIRouter(
     prefix="/bmxbikesworld/api/v1",
-    dependencies=[Depends(check_api_key)]
+    # dependencies=[Depends(check_api_key)]
 )
 
 

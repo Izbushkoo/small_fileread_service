@@ -5,8 +5,8 @@ from wix_api import AsyncClient, WixBlogRoute
 
 
 async def create_single_draft(file: UploadFile):
-    if file.filename.endswith(".txt"):
-        file_name = file.filename.replace(".txt", "")
+    if file.filename.endswith(".docx"):
+        file_name = file.filename.replace(".docx", "")
         file_content = await file.read()
         new_draft = DraftPost(
             title=file_name,
