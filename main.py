@@ -37,10 +37,16 @@ router = APIRouter(
 @router.post("/upload", response_model=None)
 async def upload(files: List[UploadFile]):
     draft_posts_ids = []
+    not_proc = []
     for file in files:
-        result = await create_single_draft(file)
-        draft_posts_ids.append(result["draftPost"]["id"])
-    return draft_posts_ids
+        try:
+            result = await create_single_draft(file)
+            print(result)
+        except Exception as e:
+            print(e)
+            not_proc.append(file.filename)
+        # draft_posts_ids.append(result["draftPost"]["id"])
+    return not_proc
 
 
 @router.post("/test")

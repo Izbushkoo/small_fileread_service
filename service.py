@@ -1,3 +1,5 @@
+from docx import Document
+from io import BytesIO
 import re
 from fastapi import UploadFile
 from wix_schemas import *
@@ -7,12 +9,15 @@ from wix_api import AsyncClient, WixBlogRoute
 async def create_single_draft(file: UploadFile):
     if file.filename.endswith(".docx"):
         file_name = file.filename.replace(".docx", "")
+        file_name = file_name[13:]
         file_content = await file.read()
+        document = Document(BytesIO(file_content))  # Создаем объект документа из байтов
+        new_content = extract_text_and_tables(document)
         new_draft = DraftPost(
             title=file_name,
             rich_content=RichContent(
                 nodes=map_to_rich_content(
-                    parse_content(file_content)
+                    parse_content(new_content)
                 )
             )
         )
@@ -23,6 +28,31 @@ async def create_single_draft(file: UploadFile):
         return created_draft
     else:
         return
+
+
+def extract_text_and_tables(doc: Document):
+    full_text = []
+
+    for element in doc.element.body:
+        if element.tag.endswith('}p'):
+            # Получаем индекс и преобразуем его в int
+            index = int(element.xpath('count(preceding-sibling::w:p)'))
+            paragraph = doc.paragraphs[index]
+            full_text.append(paragraph.text)
+        elif element.tag.endswith('}tbl'):
+            index = int(element.xpath('count(preceding-sibling::w:tbl)'))
+            table = doc.tables[index]
+            # Начинаем формировать HTML-таблицу
+            table_html = "<table border='1'>"
+            for row in table.rows:
+                table_html += "<tr>"
+                for cell in row.cells:
+                    table_html += f"<td>{cell.text}</td>"
+                table_html += "</tr>"
+            table_html += "</table>"
+            full_text.append(table_html)
+
+    return ' '.join(full_text)
 
 
 async def create_single_draft_test():
@@ -44,12 +74,13 @@ async def create_single_draft_test():
 
 def parse_content(input_text):
     sections = []
-    regex = re.compile(r'(HHH | PPP | TTT)(. *?)\1', re.DOTALL)
+    regex = re.compile(r'(HHH|PPP|TTT)(.*?)\1', re.DOTALL)
 
     for match in regex.finditer(input_text):
         type_tag = match.group(1)
         text = match.group(2).strip()
-
+        if text.endswith('/'):
+            text = text[:-1]
         # Определение типа на основе тега
         type_ = None
         if type_tag == 'HHH':
@@ -74,7 +105,6 @@ def map_to_rich_content(sections: List[Dict]):
                 text=section["text"]
             )
         )
-        print(text_node)
         empty_node = Node(
             type="PARAGRAPH"
         )
