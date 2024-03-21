@@ -1,0 +1,96 @@
+<style>
+
+  .product-card {
+    border: 3px solid orange;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 650px;
+    padding: 30px;
+    margin: 30px auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  .product-card h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .product-card p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #666;
+  }
+
+  .product-card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+  }
+
+  .best-choice {
+    background-color: orange;
+    color: white;
+    padding: 5px 10px;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+
+  .btn:hover {
+    background-color: #45a049;
+  }
+
+.border {
+  border: 2px solid black;
+  position: relative;
+}
+
+.label {
+  position: absolute;
+  font-size: 12px;
+  color: orange;
+  font-weight: 800;
+  left: 24px;
+  top: -10px; /* Регулирование отступа метки сверху */
+  background-color: white;
+  padding: 2px 5px;
+}
+</style>
+<body>
+    <div class="container">
+        <div class="product-card">
+            <div class="label">BEST CHOICE</div>
+            <div class="content">
+                <h2>{{ card.title }}</h2>
+                <p>{{ card.description }}</p>
+                <div class="but_div">
+                    <div>
+                        <a href="#" class="btn">Read Verified Customer Reviews</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <img src="{{card.image_url}}">
+            </div>
+        </div>
+    </div>
+</body>

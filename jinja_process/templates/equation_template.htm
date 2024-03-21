@@ -1,0 +1,70 @@
+{% from 'create_eq_card.htm' import equation_card -%}
+{% include 'header.htm' ignore missing %}
+  <style>
+    .card {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .card img {
+      width: 200px;
+      height: 200px;
+      margin: 10px;
+      border-radius: 4px;
+    }
+    .card-image {
+      display: flexbox;
+    }
+    .card-header {
+      background-color: #f8c045;
+      color: white;
+      width: 100px;
+      font-size: 0.85em;
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: block;
+      margin-top: 10px;
+      /* margin-left: 10px; */
+    }
+    .card-title {
+      color: #333;
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+    .card-list {
+      list-style: inside;
+      list-style: disc;
+      padding: 0;
+    }
+    .card-list li {
+      margin-left: 5px;
+      margin-bottom: 5px;
+    }
+    .card-button {
+      background-color: #ff4500;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .card-rating {
+      color: #ffcc00;
+      margin-left: 5px;
+    }
+    .rating {
+      margin: 10px;
+      align-items: top;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+<body>
+  {{ equation_card(card) }}
+</body>
+{% include 'footer.htm' ignore missing %}

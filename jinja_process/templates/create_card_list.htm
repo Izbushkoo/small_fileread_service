@@ -1,0 +1,9 @@
+{% macro card_list(card, class_name='card-list') -%}
+    <div>
+        <ul class={{class_name}}>
+            {% for item in card.description_items -%}
+                <li>{{item}}</li>
+            {%- endfor %}
+            </ul>
+    </div>
+{%- endmacro %}

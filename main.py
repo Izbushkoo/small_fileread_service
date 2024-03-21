@@ -3,6 +3,8 @@ import uvicorn
 from fastapi import FastAPI, UploadFile, APIRouter, Depends, Header, HTTPException
 from starlette.middleware.cors import CORSMiddleware
 
+from jinja_process.cards_router import card_router
+from jinja_process.examples_router import examples_router
 from service import create_single_draft_test, create_single_draft
 
 from config import settings
@@ -33,6 +35,13 @@ router = APIRouter(
     # dependencies=[Depends(check_api_key)]
 )
 
+examples = APIRouter(
+    prefix="/examples",
+    # dependencies=[Depends(check_api_key)]
+)
+
+examples.include_router(examples_router)
+
 
 @router.post("/upload", response_model=None)
 async def upload(files: List[UploadFile]):
@@ -49,11 +58,14 @@ async def upload(files: List[UploadFile]):
     return not_proc
 
 
-@router.post("/test")
-async def test():
-    return await create_single_draft_test()
+# @router.post("/test")
+# async def test():
+#     return await create_single_draft_test()
 
 app.include_router(router)
+app.include_router(examples)
+app.include_router(card_router)
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

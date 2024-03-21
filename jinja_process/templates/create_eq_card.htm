@@ -1,0 +1,17 @@
+{% from 'create_card_list.htm' import card_list %}
+{% macro equation_card(card) -%}
+    <div class="card">
+        <div class="card-image">
+            <div class="card-header">{{ card.header }}</div>
+            <img src="{{ card.image_url }}">
+        </div>
+        <div class="card-title">
+            <h2>{{ card.title }}</h2>
+            {{ card_list(card) }}
+        </div>
+        <div class="rating">
+            <span class="card-rating">{{ '★' * card.rating }}</span>
+            <span class="card-button">CHECK PRICE</span>
+  </div>
+</div>
+{%- endmacro %}
